@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Nova
+Comment=Offline talking assistant — corner bubble, chat, and voice
+Exec=PLACEHOLDER/run.sh
+Terminal=false
+Categories=Utility;
+StartupNotify=true

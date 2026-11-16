@@ -1,0 +1,1 @@
+`nova-face.jpg` is Nova's official portrait (original AI character, no logos). The app uses it as the base for her avatar and animates the eye and mouth regions (see `nova/face_layout.py` and `nova/qml/Face.qml`).

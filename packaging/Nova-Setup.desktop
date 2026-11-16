@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Nova Setup
+Comment=Install or update Nova's local voices and models (no terminal)
+Exec=PLACEHOLDER/setup.sh
+Terminal=false
+Categories=Utility;
