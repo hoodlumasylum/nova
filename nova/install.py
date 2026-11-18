@@ -371,14 +371,16 @@ def ensure_model(cfg: dict, progress: Progress, name: str | None = None) -> None
     progress.status(f"Model {model} is ready.", 1.0)
 
 
-def _write_windows_shortcut(dest: Path, target: Path, workdir: Path) -> None:
+def _write_windows_shortcut(dest: Path, target: Path, workdir: Path, args: str = "") -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     def q(s: str) -> str:
         return s.replace("'", "''")
+    arg_line = f"$l.Arguments = '{q(args)}'; " if args else ""
     script = (
         "$s = New-Object -ComObject WScript.Shell; "
         f"$l = $s.CreateShortcut('{q(str(dest))}'); "
         f"$l.TargetPath = '{q(str(target))}'; "
+        + arg_line +
         f"$l.WorkingDirectory = '{q(str(workdir))}'; "
         "$l.Save()"
     )
@@ -392,22 +394,29 @@ def _write_windows_shortcut(dest: Path, target: Path, workdir: Path) -> None:
 
 
 def write_windows_shortcuts(app_root: Path) -> list[Path]:
-    """Desktop + Start Menu shortcuts to Nova.exe (or run.bat) and Setup."""
+    """Desktop + Start Menu shortcuts. Prefer pythonw -m nova so no console flashes."""
     app_root = Path(app_root).resolve()
+    pythonw = app_root / ".venv" / "Scripts" / "pythonw.exe"
     nova = app_root / "Nova.exe"
-    setup = app_root / "Nova-Setup.exe"
-    if not nova.is_file():
+    nova_args = ""
+    if pythonw.is_file():
+        nova = pythonw
+        nova_args = "-m nova"
+    elif not nova.is_file():
         nova = app_root / "run.bat"
+    setup = app_root / "Nova-Setup.exe"
     if not setup.is_file():
         setup = app_root / "setup.bat"
     desktop = Path.home() / "Desktop"
     start = Path(os.environ.get("APPDATA") or (Path.home() / "AppData" / "Roaming")) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / "Nova"
     out: list[Path] = []
     for folder in (desktop, start):
-        for name, target in (("Nova.lnk", nova), ("Nova Setup.lnk", setup)):
-            dest = folder / name
-            _write_windows_shortcut(dest, target, app_root)
-            out.append(dest)
+        dest = folder / "Nova.lnk"
+        _write_windows_shortcut(dest, nova, app_root, nova_args)
+        out.append(dest)
+        dest = folder / "Nova Setup.lnk"
+        _write_windows_shortcut(dest, setup, app_root)
+        out.append(dest)
     return out
 
 

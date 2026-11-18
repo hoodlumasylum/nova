@@ -1,4 +1,5 @@
-PySide6>=6.6
+PySide6_Essentials>=6.6
+# Essentials is enough for the window (Qt Quick + Widgets) and is much smaller than the full PySide6 pack.
 # Optional, used for X11 global hotkeys and unpacking Ollama's official .tar.zst:
 # python-xlib
 # zstandard

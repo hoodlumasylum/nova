@@ -8,3 +8,8 @@ dist/
 build/
 *.log
 .nova-tmp/
+preview/frames/
+preview/debug-*.png
+preview/diff-*.png
+preview/zoom-*.png
+preview/_palette.png

@@ -74,8 +74,11 @@ def main(argv: list[str] | None = None) -> int:
                 return found
         return None
 
+    _root = engine.rootObjects()[0]
     bubble = _named("bubbleWindow")
     main_win = _named("mainWindow")
+    # Keep Python references so the windows are never garbage-collected.
+    qapp._nova_windows = (_root, bubble, main_win)
 
     BUBBLE = 176
     MARGIN = 14

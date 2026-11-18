@@ -12,13 +12,23 @@ Nova is a standalone offline talking assistant for Linux and Windows. She is not
 
 ## Install on Windows
 
-1. Download `nova-0.1.0-windows.zip` from the latest [release](https://github.com/hoodlumasylum/nova/releases).
-2. Extract it.
-3. Double-click **Nova-Setup.exe** (or `setup.bat`).
-4. If asked, install Python 3.10 or newer from [python.org](https://www.python.org/downloads/windows/) and tick **Add python.exe to PATH**, then run Setup again.
-5. When Setup finishes, open **Nova** (`Nova.exe`, `run.bat`, or the Desktop / Start Menu shortcut).
+1. Download the Nova zip and extract it (for example into Downloads).
+2. Double-click **setup.bat** (or **Nova-Setup.exe** if you have it).
+3. `setup.bat` is meant to be one click, with no terminal knowledge:
+   - Installs Python 3.12 for this user if it is missing (winget, or the official silent installer).
+   - Creates a local environment and installs Nova's Python packages.
+   - Puts **Nova** and **Nova Setup** shortcuts on the Desktop and in the Start Menu (Nova opens with `pythonw`, so no black console window).
+   - Then opens Nova Setup so she can download voices and models.
+   - Safe to run again: it will not redo work that is already done. A log is written to `%LOCALAPPDATA%\Nova\setup.log`.
+4. When Setup finishes, open **Nova** from the Desktop shortcut (or `run.bat`).
 
 Windows Setup downloads official Ollama for Windows, Piper, and whisper.cpp builds into `%LOCALAPPDATA%\Nova`. Same rule as Linux: nothing heavy is bundled in this zip.
+
+A full list of what she needs, including optional voices and sizes, is in [docs/software.md](docs/software.md).
+
+## Her face
+
+Nova's portrait is an original character, not a picture of a real person, and the app does not clone anyone's face. Blink, gaze and lighting are layered 2D animation on that still portrait (the real iris shifts inside a soft mask, lids are sampled from her own skin, catchlights and a warm light ease with movement). It can look alive on the desktop, but it is not a filmed or 3D performance.
 
 ## Honest notes
 

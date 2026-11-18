@@ -7,7 +7,7 @@ QtObject {
 
     property int bubbleSize: 176
 
-    property var bubble: Window {
+    property Window bubble: Window {
         id: bubbleWindow
         objectName: "bubbleWindow"
         width: root.bubbleSize
@@ -88,7 +88,7 @@ QtObject {
         }
     }
 
-    property var main: Window {
+    property Window main: Window {
         id: mainWindow
         objectName: "mainWindow"
         visible: false

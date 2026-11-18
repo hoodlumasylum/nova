@@ -5,8 +5,8 @@ import shutil
 import time
 from pathlib import Path
 
-from PySide6.QtCore import Property, QObject, QStandardPaths, Qt, QThread, QTimer, QUrl, Signal, Slot
-from PySide6.QtGui import QClipboard, QGuiApplication
+from PySide6.QtCore import Property, QObject, QPoint, QStandardPaths, Qt, QThread, QTimer, QUrl, Signal, Slot
+from PySide6.QtGui import QClipboard, QCursor, QGuiApplication
 from PySide6.QtWidgets import QFileDialog
 
 from . import __version__, config, engine, express, history, install, lipsync, memory, paths, speech, video_prompt, wake
@@ -112,6 +112,7 @@ class Backend(QObject):
     speedNoteChanged = Signal()
     hotkeyWarningChanged = Signal()
     bubbleMoved = Signal(int, int)  # hint for the window
+    cursorChanged = Signal()
 
     def __init__(self):
         super().__init__()
@@ -153,6 +154,12 @@ class Backend(QObject):
         self._idle_timer.setInterval(30_000)
         self._idle_timer.timeout.connect(self._maybe_unload)
         self._idle_timer.start()
+
+        self._cursor = QPoint(0, 0)
+        self._cursor_timer = QTimer(self)
+        self._cursor_timer.setInterval(16)
+        self._cursor_timer.timeout.connect(self._poll_cursor)
+        self._cursor_timer.start()
 
         if not self._setup_needed:
             # Warm the server in the background later; don't block UI start.
@@ -258,6 +265,18 @@ class Backend(QObject):
         constant=True,
     )
     faceImage = Property(str, lambda self: Path(paths.face_image()).as_uri(), constant=True)
+
+    def _poll_cursor(self) -> None:
+        try:
+            p = QCursor.pos()
+        except Exception:
+            return
+        if p.x() != self._cursor.x() or p.y() != self._cursor.y():
+            self._cursor = p
+            self.cursorChanged.emit()
+
+    cursorX = Property(int, lambda self: int(self._cursor.x()), notify=cursorChanged)
+    cursorY = Property(int, lambda self: int(self._cursor.y()), notify=cursorChanged)
 
     def _get_video_idea(self) -> str:
         return self._video_idea

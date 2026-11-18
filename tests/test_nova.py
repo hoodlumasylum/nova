@@ -228,3 +228,43 @@ class InstallPlatformTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FaceAssetTests(unittest.TestCase):
+    def test_layout_has_lid_and_gaze_boxes(self):
+        for box in (face_layout.LEFT_EYE, face_layout.RIGHT_EYE, face_layout.LEFT_LID, face_layout.RIGHT_LID,
+                    face_layout.MOUTH, face_layout.BUBBLE_FOCUS):
+            self.assertGreater(box["w"], 0)
+            self.assertGreater(box["h"], 0)
+            self.assertLess(box["x"] + box["w"], 1.01)
+            self.assertLess(box["y"] + box["h"], 1.01)
+        # Gaze boxes sit inside (or on) the lid coverage, so the iris cannot slide onto the cheek.
+        for gaze, lid in ((face_layout.LEFT_EYE, face_layout.LEFT_LID), (face_layout.RIGHT_EYE, face_layout.RIGHT_LID)):
+            self.assertGreaterEqual(gaze["x"], lid["x"] - 0.002)
+            self.assertGreaterEqual(gaze["y"], lid["y"] - 0.002)
+            self.assertLessEqual(gaze["x"] + gaze["w"], lid["x"] + lid["w"] + 0.002)
+            self.assertLessEqual(gaze["y"] + gaze["h"], lid["y"] + lid["h"] + 0.002)
+
+    def test_eye_overlay_assets_exist(self):
+        assets = Path(__file__).resolve().parents[1] / "nova" / "assets"
+        for name in ("eye-mask.png", "eye-catchlight.png", "eye-wetline.png", "eye-socket-shadow.png",
+                     "face-warm-light.png", "lid-left-upper.png", "lid-left-lower.png",
+                     "lid-right-upper.png", "lid-right-lower.png", "nova-face.jpg"):
+            self.assertTrue((assets / name).is_file(), name)
+
+    def test_face_qml_has_smoothed_gaze_and_soft_lids(self):
+        qml = (Path(__file__).resolve().parents[1] / "nova" / "qml" / "Face.qml").read_text(encoding="utf-8")
+        self.assertIn("SmoothedAnimation", qml)
+        self.assertIn("EyeSocket", qml)
+        self.assertIn("previewDemo", qml)
+        self.assertIn("lid-left-upper.png", qml)
+        self.assertIn("eye-catchlight.png", qml)
+        self.assertNotIn('color: "#5C3324"', qml)
+
+    def test_setup_bat_installs_python_312(self):
+        bat = (Path(__file__).resolve().parents[1] / "setup.bat").read_text(encoding="utf-8")
+        self.assertIn("Python.Python.3.12", bat)
+        self.assertIn("py -3.12", bat)
+        self.assertIn("pythonw", bat.lower())
+        self.assertIn("setup.log", bat)
+        self.assertIn("InstallAllUsers=0", bat)
