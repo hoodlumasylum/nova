@@ -62,7 +62,9 @@ public final class ClassGate {
         try {
             JSONObject o = new JSONObject(json);
             a.classCode = o.optString("classCode", "");
-            a.pinHash = o.optString("pinHash", "");
+            a.pinHash = "";
+            a.studentPinHash = o.optString("studentPinHash", "");
+            a.studentPinSalt = o.optString("studentPinSalt", "");
             a.classOn = o.optBoolean("classOn", false);
             a.classUntil = o.optLong("classUntil", 0);
             a.homeUseAll = o.optBoolean("homeUseAll", false);
@@ -86,8 +88,8 @@ public final class ClassGate {
         try {
             JSONObject o = new JSONObject();
             o.put("v", 1);
-            o.put("classCode", a.classCode == null ? "" : a.classCode);
-            o.put("pinHash", a.pinHash == null ? "" : a.pinHash);
+            o.put("studentPinHash", a.studentPinHash == null ? "" : a.studentPinHash);
+            o.put("studentPinSalt", a.studentPinSalt == null ? "" : a.studentPinSalt);
             o.put("classOn", a.classOn);
             o.put("classUntil", a.classUntil);
             o.put("homeUseAll", a.homeUseAll);

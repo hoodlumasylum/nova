@@ -5,7 +5,10 @@ import java.util.ArrayList;
 /** Live class switch as stored on the free class page and cached on the phone. */
 public final class ClassAccess {
     public String classCode = "";
+    /** @deprecated Teacher PIN never leaves the phone. Kept only to ignore old pages. */
     public String pinHash = "";
+    public String studentPinHash = "";
+    public String studentPinSalt = "";
     public boolean classOn;
     public long classUntil;
     public boolean homeUseAll;

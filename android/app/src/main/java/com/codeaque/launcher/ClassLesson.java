@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/** A short explanation plus three quiz questions for Class mode. */
+/** A class topic pack: explanation, quiz, flashcards, steps and homework. */
 public final class ClassLesson {
     public static final class Item {
         public String q = "";
@@ -14,10 +14,20 @@ public final class ClassLesson {
         public Item(String q, String a) { this.q = q; this.a = a; }
     }
 
+    public static final class Card {
+        public String front = "";
+        public String back = "";
+        public Card() {}
+        public Card(String front, String back) { this.front = front; this.back = back; }
+    }
+
     public static final class Lesson {
         public String topic = "";
         public String explain = "";
         public final ArrayList<Item> questions = new ArrayList<Item>();
+        public final ArrayList<Card> cards = new ArrayList<Card>();
+        public final ArrayList<String> steps = new ArrayList<String>();
+        public String homework = "";
         public long startedAt;
     }
 
@@ -38,6 +48,21 @@ public final class ClassLesson {
                 qs.put(q);
             }
             o.put("qs", qs);
+            JSONArray cards = new JSONArray();
+            for (int i = 0; i < l.cards.size(); i++) {
+                Card c = l.cards.get(i);
+                JSONObject j = new JSONObject();
+                j.put("f", c.front == null ? "" : c.front);
+                j.put("b", c.back == null ? "" : c.back);
+                cards.put(j);
+            }
+            o.put("cards", cards);
+            JSONArray steps = new JSONArray();
+            for (int i = 0; i < l.steps.size(); i++) {
+                steps.put(l.steps.get(i) == null ? "" : l.steps.get(i));
+            }
+            o.put("steps", steps);
+            o.put("hw", l.homework == null ? "" : l.homework);
             return o;
         } catch (Exception e) {
             return new JSONObject();
@@ -57,6 +82,25 @@ public final class ClassLesson {
                 if (q == null) continue;
                 l.questions.add(new Item(q.optString("q", ""), q.optString("a", "")));
             }
+        }
+        JSONArray cards = o.optJSONArray("cards");
+        if (cards != null) {
+            for (int i = 0; i < cards.length(); i++) {
+                JSONObject c = cards.optJSONObject(i);
+                if (c == null) continue;
+                l.cards.add(new Card(c.optString("f", ""), c.optString("b", "")));
+            }
+        }
+        JSONArray steps = o.optJSONArray("steps");
+        if (steps != null) {
+            for (int i = 0; i < steps.length(); i++) {
+                String s = steps.optString(i, "");
+                if (!s.isEmpty()) l.steps.add(s);
+            }
+        }
+        l.homework = o.optString("hw", "");
+        if ((l.cards.isEmpty() || l.steps.isEmpty() || isBlank(l.homework)) && !isBlank(l.topic)) {
+            enrichForTools(l);
         }
         return l;
     }
@@ -78,12 +122,17 @@ public final class ClassLesson {
                 it.q = safeText(it.q);
                 it.a = safeText(it.a);
             }
-            while (l.questions.size() < 3) {
+            while (l.questions.size() < 5) {
                 l.questions.add(fallbackQuestion(t, l.questions.size()));
             }
-            if (l.questions.size() > 3) {
-                while (l.questions.size() > 3) l.questions.remove(l.questions.size() - 1);
+            if (l.questions.size() > 8) {
+                while (l.questions.size() > 8) l.questions.remove(l.questions.size() - 1);
             }
+            for (int i = 0; i < l.questions.size(); i++) {
+                l.questions.get(i).q = safeText(l.questions.get(i).q);
+                l.questions.get(i).a = safeText(l.questions.get(i).a);
+            }
+            enrichForTools(l);
         }
         return l;
     }
@@ -117,7 +166,7 @@ public final class ClassLesson {
     static Lesson fallback(String topic) {
         Lesson l = new Lesson();
         l.explain = "Let's talk about " + topic + ". Think about what you already know, "
-                + "and I will ask three short questions to check your thinking.";
+                + "and I will ask short questions to check your thinking.";
         l.questions.add(fallbackQuestion(topic, 0));
         l.questions.add(fallbackQuestion(topic, 1));
         l.questions.add(fallbackQuestion(topic, 2));
@@ -127,7 +176,149 @@ public final class ClassLesson {
     static Item fallbackQuestion(String topic, int i) {
         if (i == 0) return new Item("In one sentence, what is " + topic + "?", "A short, clear meaning of " + topic + ".");
         if (i == 1) return new Item("Name one important fact about " + topic + ".", "Any true, simple fact about " + topic + ".");
-        return new Item("Why might people need to know about " + topic + "?", "A simple, real-world reason.");
+        if (i == 2) return new Item("Why might people need to know about " + topic + "?", "A simple, real-world reason.");
+        if (i == 3) return new Item("Can you give an example of " + topic + "?", "Any clear, real example.");
+        if (i == 4) return new Item("What would you tell a friend about " + topic + "?", "One or two simple sentences in your own words.");
+        if (i == 5) return new Item("What is one question you still have about " + topic + "?", "A thoughtful question, or 'I understand it for now.'");
+        return new Item("True or false: learning about " + topic + " can help us in everyday life. Why?", "True, if you can give a simple reason.");
+    }
+
+    static void enrichForTools(Lesson l) {
+        if (l == null) return;
+        if (l.cards.isEmpty()) buildCards(l);
+        while (l.cards.size() < 5) {
+            int i = l.cards.size();
+            l.cards.add(new Card("Remember this about " + l.topic, fallbackQuestion(l.topic, i % 6).a));
+        }
+        if (l.cards.size() > 10) {
+            while (l.cards.size() > 10) l.cards.remove(l.cards.size() - 1);
+        }
+        for (int i = 0; i < l.cards.size(); i++) {
+            l.cards.get(i).front = safeText(l.cards.get(i).front);
+            l.cards.get(i).back = safeText(l.cards.get(i).back);
+            if (l.cards.get(i).front.isEmpty()) l.cards.get(i).front = "Card " + (i + 1);
+        }
+        if (l.steps.isEmpty()) buildSteps(l);
+        while (l.steps.size() < 3) l.steps.add("Think of one new thing you now know about " + l.topic + ".");
+        if (l.steps.size() > 5) {
+            while (l.steps.size() > 5) l.steps.remove(l.steps.size() - 1);
+        }
+        for (int i = 0; i < l.steps.size(); i++) {
+            l.steps.set(i, safeText(l.steps.get(i)));
+            if (l.steps.get(i).isEmpty()) l.steps.set(i, "Step " + (i + 1) + " of the lesson on " + l.topic + ".");
+        }
+        if (isBlank(l.homework)) l.homework = buildHomework(l);
+        l.homework = safeMultiline(l.homework);
+    }
+
+    static void buildCards(Lesson l) {
+        String topic = l.topic == null ? "this topic" : l.topic;
+        if (!isBlank(l.explain)) {
+            l.cards.add(new Card("What is " + topic + "?", firstClause(l.explain)));
+            String[] bits = splitSentences(l.explain);
+            for (int i = 0; i < bits.length && l.cards.size() < 8; i++) {
+                String s = bits[i].trim();
+                if (s.length() < 12) continue;
+                l.cards.add(new Card("Fact " + l.cards.size() + " about " + topic, s));
+            }
+        }
+        for (int i = 0; i < l.questions.size() && l.cards.size() < 10; i++) {
+            Item it = l.questions.get(i);
+            if (isBlank(it.q)) continue;
+            l.cards.add(new Card(it.q, isBlank(it.a) ? "Say it in your own words." : it.a));
+        }
+        if (l.cards.isEmpty()) {
+            l.cards.add(new Card("Today's topic", topic));
+        }
+    }
+
+    static void buildSteps(Lesson l) {
+        String topic = l.topic == null ? "this topic" : l.topic;
+        l.steps.add("Today we are learning about " + topic + ".");
+        if (!isBlank(l.explain)) {
+            String[] bits = splitSentences(l.explain);
+            for (int i = 0; i < bits.length && l.steps.size() < 4; i++) {
+                String s = bits[i].trim();
+                if (s.length() < 8) continue;
+                l.steps.add(s);
+            }
+        }
+        l.steps.add("Now think of one example of " + topic + ", or tell a friend one thing you learned.");
+        if (l.steps.size() < 3) {
+            l.steps.add("Ask Nova if any part of " + topic + " still feels unclear.");
+        }
+    }
+
+    public static String buildHomework(Lesson l) {
+        String topic = l.topic == null ? "today's topic" : l.topic;
+        StringBuilder b = new StringBuilder();
+        b.append("Nova homework: ").append(topic).append("\n\n");
+        if (!isBlank(l.explain)) b.append("Remember:\n").append(l.explain).append("\n\n");
+        b.append("Try these at home (write short answers):\n");
+        int n = Math.min(4, l.questions.size());
+        for (int i = 0; i < n; i++) {
+            b.append(i + 1).append(". ").append(l.questions.get(i).q).append("\n");
+        }
+        if (n == 0) {
+            b.append("1. What is ").append(topic).append("?\n");
+            b.append("2. Name one fact about it.\n");
+            b.append("3. Give one example.\n");
+        }
+        b.append("\nYou may ask a teacher or a grown-up if you get stuck. Keep it simple and in your own words.");
+        return b.toString();
+    }
+
+    static String[] splitSentences(String s) {
+        if (s == null || s.isEmpty()) return new String[0];
+        ArrayList<String> out = new ArrayList<String>();
+        StringBuilder cur = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            cur.append(ch);
+            if (ch == '.' || ch == '!' || ch == '?') {
+                String bit = cur.toString().trim();
+                if (!bit.isEmpty()) out.add(bit);
+                cur.setLength(0);
+            }
+        }
+        String tail = cur.toString().trim();
+        if (!tail.isEmpty()) out.add(tail);
+        return out.toArray(new String[0]);
+    }
+
+    static String safeMultiline(String s) {
+        if (s == null) return "";
+        String t = s.replace('\r', '\n');
+        String[] lines = splitLines(t);
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            String raw = lines[i];
+            String line = safeText(raw);
+            if (line.isEmpty() && raw.trim().isEmpty()) {
+                if (b.length() > 0) b.append('\n');
+                continue;
+            }
+            if (line.isEmpty()) continue;
+            if (b.length() > 0) b.append('\n');
+            b.append(line);
+        }
+        return b.toString();
+    }
+
+    static String[] splitLines(String t) {
+        ArrayList<String> out = new ArrayList<String>();
+        StringBuilder cur = new StringBuilder();
+        for (int i = 0; i < t.length(); i++) {
+            char ch = t.charAt(i);
+            if (ch == '\n') {
+                out.add(cur.toString());
+                cur.setLength(0);
+            } else {
+                cur.append(ch);
+            }
+        }
+        out.add(cur.toString());
+        return out.toArray(new String[0]);
     }
 
     static Lesson parseBlock(String raw) {
@@ -153,12 +344,6 @@ public final class ClassLesson {
         int i = indexIgnore(t, key);
         if (i < 0) return "";
         int s = i + key.length();
-        int end = t.length();
-        String[] next = new String[]{"\nQ1:", "\nA1:", "\nQ2:", "\nA2:", "\nQ3:", "\nA3:", "\nEXPLAIN:"};
-        for (int k = 0; k < next.length; k++) {
-            int n = indexIgnore(t.substring(s), next[k].trim());
-            // search remaining from s
-        }
         String rest = t.substring(s);
         int cut = rest.length();
         String[] marks = new String[]{"Q1:", "A1:", "Q2:", "A2:", "Q3:", "A3:", "EXPLAIN:"};

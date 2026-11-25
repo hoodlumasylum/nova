@@ -163,6 +163,23 @@ public final class ClassUi {
         return t;
     }
 
+    public static TextView huge(Context c, String s) {
+        TextView t = new TextView(c);
+        t.setText(s);
+        t.setTextColor(TEXT);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
+        t.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
+        t.setGravity(Gravity.CENTER);
+        t.setLineSpacing(0, 1.15f);
+        t.setBackground(round(CARD, GOLD, dp(c, 18), dp(c, 2)));
+        t.setPadding(dp(c, 18), dp(c, 28), dp(c, 18), dp(c, 28));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.bottomMargin = dp(c, 16);
+        t.setLayoutParams(lp);
+        return t;
+    }
+
     public static TextView codeView(Context c, String code) {
         TextView t = new TextView(c);
         t.setText(code);

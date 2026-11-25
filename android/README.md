@@ -4,6 +4,8 @@ A standalone Nova app for teaching. Students install the same app on their own p
 
 This is the same Nova already used in CodeAque Kids mode: gold face, moving mouth, Heart voice, on-phone brain, and Simple English Wikipedia when online. It is a separate app, so it can sit next to CodeAque.
 
+Version **1.0.1**.
+
 ## Install (one APK)
 
 1. On the phone, open this file: **Nova.apk**.
@@ -14,30 +16,45 @@ There is no zip file and no sign-in.
 
 **Teacher first:** the teacher should open the app and set a teacher PIN before students join.
 
+If you already have **1.0.0**, install this APK once by hand. From 1.0.1 onwards, Nova checks for a newer Android release when it opens and can install **Nova.apk** with one tap (you may need to allow Nova to install apps). If the phone is offline, the check is skipped quietly.
+
 ## Teacher
 
 1. Tap **I am the teacher**.
-2. Set a PIN of 4 to 8 numbers (and remember it).
-3. You will see a **class code**. Tell the class that code.
+2. Choose a teacher PIN of 6 to 16 letters or numbers. Capital letters matter. Keep it private. It is saved only on this phone, as a salted hash — never in the project, and never on the class switch.
+3. You will see a big **student PIN** (5 or 6 digits). Tell the class that PIN. **New student PIN** makes a new one and locks out the old one, including old start or home codes.
 4. Tap **Start class** when the lesson begins, and **End class** when it finishes. Class stays on for 3 hours unless you end it sooner.
 5. **Allow home use for everyone** lets the whole class use Nova at home for 7 days, or until you turn it off.
 6. **Students** lets you turn home use on or off for one student. They appear after they join.
-7. **Class mode** — type or say a topic. Nova gives a short explanation and three quiz questions. Students with access can open **Today's quiz**.
+7. **Class mode** — type or say a topic. Nova makes a short, kid-safe lesson in simple English:
+   - a short explanation
+   - **Flashcards** (5 to 10 cards; Nova reads them aloud)
+   - **Quick-fire quiz** (one question at a time, a timer, a big reveal, and a score tally)
+   - **Step-by-step lesson** (3 to 5 short steps with Next)
+   - **Share homework** (opens the Android share sheet so you can send the sheet)
 8. **Talk with Nova** — full-screen Nova, for presenting to the class.
-9. If the internet is down, **Show a start code**. A student can type that code to get access until it runs out (3 hours for class, or 7 days for a home pass).
+9. If the internet is down, **Show a start code**. A student can type that code to get access until it runs out (3 hours for class, or 7 days for a home pass). These codes are tied to the current student PIN.
 
 ## Student
 
+Students can use these tools only while the teacher has allowed access (class is on, or home use is allowed, or a start/home code is still valid).
+
 1. Tap **I am a student**.
-2. Type the class code and your first name, then **Join**.
+2. Type the student PIN and your first name, then **Join**. If the teacher makes a new student PIN, you will need to join again.
 3. If class is off and home use is not allowed, you will see: **Nova is resting until class**.
-4. When the teacher starts class (or allows home use), Nova opens full screen. Use the big mic, or type, and she answers in simple words.
+4. When access is allowed, you get a simple class home:
+   - **Today's topic** — the recap the teacher pushed
+   - **Practice flashcards**
+   - **Self-quiz** with your own score
+   - **Ask Nova about the lesson**
+   - **My progress** (quizzes finished and scores, stored only on this phone)
+   - **Talk with Nova**
 
 ## First-time downloads
 
 The first time Nova speaks in her own voice, the phone downloads her voice (about 360 MB). An optional on-phone brain (about 800 MB) can also be downloaded. After that, talking works offline.
 
-She may also look up a short fact on Simple English Wikipedia when the phone is online. The class on/off switch also needs the internet, unless a student is using a start or home code.
+She may also look up a short fact on Simple English Wikipedia when the phone is online. The class on/off switch also needs the internet, unless a student is using a start or home code. If the on-phone brain is not downloaded, Class mode still builds a lesson from Wikipedia or a simple fallback.
 
 ## Safety
 
@@ -46,7 +63,9 @@ Nova stays clean and simple. She will not talk about religion, god, or conspirac
 ## Honest limits
 
 - The live class switch uses a free public page (rentry.co). Nobody needs an account or an API key. If that page cannot be reached, use a start or home code, or the last update saved on the phone.
-- A very determined person who unpacks the app could find the switch address. Keep the teacher PIN private. For a classroom this is a simple honour-system switch, not a bank lock.
+- A very determined person who unpacks the app could find the switch address and the write codes. Keep the teacher PIN private. For a classroom this is a simple honour-system switch, not a bank lock.
 - If a phone is offline, a home-use grant can last until its time runs out (or up to about a day after it last checked in).
 - This version is for one class (the class in this app).
-- The APK was built and signed, and the class-code logic was tested on the computer. It has not yet been run on a real phone or in an emulator (the emulator image was not available on the build machine).
+- Student progress stays on that student's phone. The teacher cannot see it from the class switch.
+- Live update checks use the public GitHub releases list and only pick a newer tag like `v1.0.1-android` that has a **Nova.apk** file.
+- The APK was built and signed, and the PIN, update-tag, and lesson-pack logic were tested on the computer. It has not yet been run on a real phone or in an emulator (the emulator image was not available on the build machine). Class tools, sharing, and the in-app installer have not been tapped through on a device.
