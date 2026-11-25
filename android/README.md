@@ -4,7 +4,7 @@ A standalone Nova app for teaching. Students install the same app on their own p
 
 This is the same Nova already used in CodeAque Kids mode: gold face, moving mouth, Heart voice, on-phone brain, and Simple English Wikipedia when online. It is a separate app, so it can sit next to CodeAque.
 
-Version **1.0.1**.
+Version **1.0.2**.
 
 ## Install (one APK)
 
@@ -16,24 +16,25 @@ There is no zip file and no sign-in.
 
 **Teacher first:** the teacher should open the app and set a teacher PIN before students join.
 
-If you already have **1.0.0**, install this APK once by hand. From 1.0.1 onwards, Nova checks for a newer Android release when it opens and can install **Nova.apk** with one tap (you may need to allow Nova to install apps). If the phone is offline, the check is skipped quietly.
+If you already have **1.0.0**, install a later APK once by hand. From 1.0.1 onwards, Nova checks for a newer Android release when it opens and can install **Nova.apk** with one tap (you may need to allow Nova to install apps). If the phone is offline, the check is skipped quietly.
 
 ## Teacher
 
 1. Tap **I am the teacher**.
 2. Choose a teacher PIN of 6 to 16 letters or numbers. Capital letters matter. Keep it private. It is saved only on this phone, as a salted hash — never in the project, and never on the class switch.
-3. You will see a big **student PIN** (5 or 6 digits). Tell the class that PIN. **New student PIN** makes a new one and locks out the old one, including old start or home codes.
-4. Tap **Start class** when the lesson begins, and **End class** when it finishes. Class stays on for 3 hours unless you end it sooner.
-5. **Allow home use for everyone** lets the whole class use Nova at home for 7 days, or until you turn it off.
-6. **Students** lets you turn home use on or off for one student. They appear after they join.
-7. **Class mode** — type or say a topic. Nova makes a short, kid-safe lesson in simple English:
+3. After that PIN, you land on **Just Nova**: full-screen Nova with the mic, as your own personal assistant. There is no class lock on this screen, and no class controls. Tap **Teacher / Class tools** when you want the student PIN, class on/off, or lesson tools. **Just Nova** on that tools screen brings you back.
+4. In Teacher / Class tools you will see a big **student PIN** (5 or 6 digits). Tell the class that PIN. **New student PIN** makes a new one and locks out the old one, including old start or home codes.
+5. Tap **Start class** when the lesson begins, and **End class** when it finishes. Class stays on for 3 hours unless you end it sooner.
+6. **Allow home use for everyone** lets the whole class use Nova at home for 7 days, or until you turn it off.
+7. **Students** lets you turn home use on or off for one student. They appear after they join.
+8. **Class mode** — type or say a topic. Nova makes a short, kid-safe lesson in simple English:
    - a short explanation
    - **Flashcards** (5 to 10 cards; Nova reads them aloud)
    - **Quick-fire quiz** (one question at a time, a timer, a big reveal, and a score tally)
    - **Step-by-step lesson** (3 to 5 short steps with Next)
    - **Share homework** (opens the Android share sheet so you can send the sheet)
-8. **Talk with Nova** — full-screen Nova, for presenting to the class.
-9. If the internet is down, **Show a start code**. A student can type that code to get access until it runs out (3 hours for class, or 7 days for a home pass). These codes are tied to the current student PIN.
+9. **Just Nova** — back to your personal full-screen Nova.
+10. If the internet is down, **Show a start code**. A student can type that code to get access until it runs out (3 hours for class, or 7 days for a home pass). These codes are tied to the current student PIN.
 
 ## Student
 

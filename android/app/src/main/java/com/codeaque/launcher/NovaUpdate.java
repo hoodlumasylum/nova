@@ -13,7 +13,7 @@ import java.util.Locale;
 public final class NovaUpdate {
     public static final String REPO = "hoodlumasylum/nova";
     public static final String API = "https://api.github.com/repos/" + REPO + "/releases?per_page=20";
-    public static final String UA = "NovaAndroid/1.0.1";
+    public static final String UA = "NovaAndroid/1.0.2";
 
     public static final class Offer {
         public String tag = "";
@@ -28,10 +28,20 @@ public final class NovaUpdate {
     public static Offer bestOffer(String currentName, int currentCode) {
         try {
             String body = get(API);
+            return pickOffer(body, currentName, currentCode);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /** Compare by the version name (1.0.1), not the APK versionCode (2, 3, …). */
+    public static Offer pickOffer(String body, String currentName, int currentCode) {
+        try {
             if (body == null || body.isEmpty()) return null;
             JSONArray arr = new JSONArray(body);
+            int currentSem = versionCodeOf((currentName == null ? "" : currentName) + "-android");
             Offer best = null;
-            int bestCode = currentCode;
+            int bestCode = currentSem;
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject rel = arr.optJSONObject(i);
                 if (rel == null || rel.optBoolean("draft", false) || rel.optBoolean("prerelease", false)) continue;
@@ -42,7 +52,7 @@ public final class NovaUpdate {
                 String url = asset.optString("browser_download_url", "");
                 if (url.isEmpty()) continue;
                 int code = versionCodeOf(tag);
-                if (code <= currentCode && !isNewerName(versionNameOf(tag), currentName)) continue;
+                if (code <= currentSem) continue;
                 if (code < bestCode) continue;
                 if (code == bestCode && best != null) continue;
                 Offer o = new Offer();

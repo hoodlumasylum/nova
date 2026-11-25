@@ -30,9 +30,9 @@ A full list of what she needs, including optional voices and sizes, is in [docs/
 
 A standalone Nova APK for teaching. Students each install the same app. The teacher turns class on and off, and can allow home use. Full steps are in [android/README.md](android/README.md).
 
-1. Download **Nova.apk** from the latest Android [release](https://github.com/hoodlumasylum/nova/releases) (the APK itself, not a zip). The current class app is **1.0.1** (`v1.0.1-android`).
-2. Open it on the phone and allow the install if asked. If you already have 1.0.0, install 1.0.1 by hand this once. Later versions can offer an in-app update when Nova opens.
-3. The teacher should open Nova first, choose **I am the teacher**, and set a teacher PIN of 6 to 16 letters or numbers (capital letters matter). Then share the student PIN shown on the teacher screen with the class.
+1. Download **Nova.apk** from the latest Android [release](https://github.com/hoodlumasylum/nova/releases) (the APK itself, not a zip). The current class app is **1.0.2** (`v1.0.2-android`).
+2. Open it on the phone and allow the install if asked. If you already have 1.0.0, install a later APK by hand this once. From 1.0.1, Nova can offer an in-app update when it opens.
+3. The teacher should open Nova first, choose **I am the teacher**, and set a teacher PIN of 6 to 16 letters or numbers (capital letters matter). After the PIN you land on **Just Nova** (your personal assistant). Open **Teacher / Class tools** to share the student PIN and run the class.
 
 ## Her face
 

@@ -148,7 +148,7 @@ public class MainActivity extends Activity implements NovaView.Host {
         String role = prefs.getString(P_ROLE, "");
         if ("teacher".equals(role)) {
             if (prefs.getString(P_PIN, "").isEmpty()) screen = S_TEACHER_PIN;
-            else screen = S_TEACHER_HOME;
+            else screen = S_TEACHER_NOVA;
         } else if ("student".equals(role)) {
             if (prefs.getString(P_SNAME, "").isEmpty() || prefs.getString(P_CODE, "").isEmpty()
                     || studentPinChanged()) {
@@ -254,8 +254,9 @@ public class MainActivity extends Activity implements NovaView.Host {
     void showTeacherHome() {
         LinearLayout col = ClassUi.col(this);
         addUpdateBanner(col);
-        col.addView(ClassUi.title(this, "Class controls"));
-        if (needsStudentPinPublish()) ensureStudentPin(true);
+        col.addView(ClassUi.title(this, "Teacher / Class tools"));
+        col.addView(ClassUi.hint(this, "Class on/off, the student PIN, and lesson tools are here. Just Nova is your personal assistant and does not use the class lock."));
+        if (needsStudentPinPublish()) ensureStudentPin(true, S_TEACHER_HOME);
         String pin = displayStudentPin();
         col.addView(ClassUi.hint(this, "Give this student PIN to your class. They type it to join:"));
         col.addView(ClassUi.codeView(this, pin.isEmpty() ? "——" : pin));
@@ -275,7 +276,7 @@ public class MainActivity extends Activity implements NovaView.Host {
         else col.addView(ClassUi.primary(this, "Start class", new GoClick(this, 11)));
         col.addView(ClassUi.secondary(this, homeAll ? "Turn off home use for everyone" : "Allow home use for everyone", new GoClick(this, 12)));
         col.addView(ClassUi.primary(this, "Class mode (topic and tools)", new GoClick(this, 13)));
-        col.addView(ClassUi.primary(this, "Talk with Nova", new GoClick(this, 14)));
+        col.addView(ClassUi.primary(this, "Just Nova", new GoClick(this, 14)));
         col.addView(ClassUi.secondary(this, "Students", new GoClick(this, 15)));
         col.addView(ClassUi.secondary(this, "Show a start code", new GoClick(this, 16)));
         setContentView(ClassUi.screen(this, col));
@@ -434,15 +435,17 @@ public class MainActivity extends Activity implements NovaView.Host {
         bar.setPadding(pad, pad, pad, pad);
         LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
         bp.rightMargin = ClassUi.dp(this, 6);
-        android.widget.Button back = ClassUi.secondary(this, teacher ? "Controls" : "Class tools", new GoClick(this, teacher ? 18 : 45));
+        android.widget.Button back = teacher
+                ? ClassUi.primary(this, "Teacher / Class tools", new GoClick(this, 18))
+                : ClassUi.secondary(this, "Class tools", new GoClick(this, 45));
         back.setLayoutParams(bp);
         bar.addView(back);
-        if (teacher) {
-            android.widget.Button cm = ClassUi.primary(this, "Class mode", new GoClick(this, 13));
+        if (teacher && NovaUpdateGo.pending() != null) {
+            android.widget.Button up = ClassUi.primary(this, "Update ready", new GoClick(this, 63));
             LinearLayout.LayoutParams bp2 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
-            cm.setLayoutParams(bp2);
-            bar.addView(cm);
-        } else if (gate.access != null && gate.access.lesson != null
+            up.setLayoutParams(bp2);
+            bar.addView(up);
+        } else if (!teacher && gate.access != null && gate.access.lesson != null
                 && gate.access.lesson.explain != null && !gate.access.lesson.explain.isEmpty()) {
             android.widget.Button q = ClassUi.primary(this, "Today's topic", new GoClick(this, 40));
             LinearLayout.LayoutParams bp2 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
@@ -532,6 +535,10 @@ public class MainActivity extends Activity implements NovaView.Host {
     }
 
     void ensureStudentPin(boolean publishIfNew) {
+        ensureStudentPin(publishIfNew, S_TEACHER_HOME);
+    }
+
+    void ensureStudentPin(boolean publishIfNew, int next) {
         String pin = prefs.getString(P_STUDENT_PIN, "");
         boolean fresh = !ClassCodes.studentPinOk(pin);
         if (fresh) {
@@ -544,7 +551,7 @@ public class MainActivity extends Activity implements NovaView.Host {
         if (fresh || (publishIfNew && missingHash)) publishStudentPin(pin);
         if ((fresh || (publishIfNew && missingHash)) && isTeacher()) {
             setBusy(true);
-            ClassGate.pushControl(gate, new AfterPush(this, "A student PIN is ready to share.", S_TEACHER_HOME));
+            ClassGate.pushControl(gate, new AfterPush(this, "A student PIN is ready to share.", next));
         }
     }
 
@@ -760,7 +767,9 @@ public class MainActivity extends Activity implements NovaView.Host {
             publishStudentPin(studentPin);
             setBusy(true);
             ClassGate.pushControl(gate, new AfterPush(this,
-                    "PIN saved on this phone. Give students this PIN: " + studentPin, S_TEACHER_HOME));
+                    "PIN saved on this phone. Give students this PIN: " + studentPin
+                            + ". Open Teacher / Class tools when you need class controls.",
+                    S_TEACHER_NOVA));
         } else {
             if (!teacherPinMatches(pin)) {
                 toast("That PIN is not right.");
@@ -770,9 +779,9 @@ public class MainActivity extends Activity implements NovaView.Host {
             if (prefs.getString(P_PIN_SALT, "").isEmpty()) storeTeacherPin(pin);
             prefs.edit().putString(P_ROLE, "teacher").apply();
             if (needsStudentPinPublish()) {
-                ensureStudentPin(true);
+                ensureStudentPin(true, S_TEACHER_NOVA);
             } else {
-                go(S_TEACHER_HOME);
+                go(S_TEACHER_NOVA);
             }
         }
     }
