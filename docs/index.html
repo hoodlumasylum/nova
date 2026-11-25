@@ -30,6 +30,53 @@
       <p><strong>Schools, colleges, universities and other organisations</strong> apply for a paid licence. Code will reply with pricing. No prices are shown on this page.</p>
     </section>
 
+    <section class="card" aria-labelledby="look-heading">
+      <h2 id="look-heading">What we look for</h2>
+      <p>We look for children with <strong>endless ideas of their own</strong> — not focused on just one idea, and not copied or influenced by others.</p>
+      <p>The most unique voices stand out. Write the ideas in the child’s own words.</p>
+    </section>
+
+    <section class="card powered" aria-labelledby="powered-heading">
+      <h2 id="powered-heading">Powered by true AI</h2>
+      <p>Nova is built to take a child’s ideas seriously. A child can start with simple prompts — even several messy ideas at once — and Nova helps turn those ideas into real outputs they can look at, follow, and keep improving.</p>
+      <p>With Nova’s help, a child will be able to work towards:</p>
+      <ul class="make">
+        <li>app and software builds they can try and change</li>
+        <li>blueprints for how something could be made</li>
+        <li>diagrams that show how an idea fits together</li>
+        <li>step-by-step plans they can follow</li>
+        <li>a learning path that grows with the idea</li>
+      </ul>
+      <p>That helps the child practise building, and it is a way for unique young minds to make things other people can use. We do not promise a finished product, a grade, or any particular result. Nova helps; the child still does the thinking, and a parent or teacher stays involved.</p>
+
+      <figure class="flow" aria-label="A child’s ideas go into Nova, and come out as a blueprint, a diagram, or an app build">
+        <svg viewBox="0 0 320 168" width="320" height="168" role="img">
+          <title>Ideas go into Nova, and come out as a blueprint, a diagram, or an app build</title>
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#E8C872"></path>
+            </marker>
+          </defs>
+          <rect x="8" y="58" width="78" height="52" rx="12" fill="#10151c" stroke="#E8C872" stroke-width="1.5"></rect>
+          <text x="47" y="81" text-anchor="middle" fill="#F5F0E6" font-size="11" font-family="Source Sans 3, Segoe UI, sans-serif" font-weight="600">Ideas</text>
+          <text x="47" y="96" text-anchor="middle" fill="#B8B0A4" font-size="9" font-family="Source Sans 3, Segoe UI, sans-serif">simple prompts</text>
+          <line x1="86" y1="84" x2="122" y2="84" stroke="#E8C872" stroke-width="1.5" marker-end="url(#arrow)"></line>
+          <rect x="124" y="50" width="72" height="68" rx="14" fill="#1A2230" stroke="#E8C872" stroke-width="2"></rect>
+          <text x="160" y="82" text-anchor="middle" fill="#E8C872" font-size="13" font-family="Cormorant Garamond, Georgia, serif" font-weight="600">Nova</text>
+          <text x="160" y="98" text-anchor="middle" fill="#B8B0A4" font-size="9" font-family="Source Sans 3, Segoe UI, sans-serif">true AI</text>
+          <line x1="196" y1="84" x2="230" y2="84" stroke="#E8C872" stroke-width="1.5" marker-end="url(#arrow)"></line>
+          <rect x="232" y="10" width="80" height="36" rx="10" fill="#10151c" stroke="rgba(232,200,114,0.55)" stroke-width="1.25"></rect>
+          <text x="272" y="32" text-anchor="middle" fill="#F5F0E6" font-size="10" font-family="Source Sans 3, Segoe UI, sans-serif">Blueprint</text>
+          <rect x="232" y="54" width="80" height="36" rx="10" fill="#10151c" stroke="rgba(232,200,114,0.55)" stroke-width="1.25"></rect>
+          <text x="272" y="76" text-anchor="middle" fill="#F5F0E6" font-size="10" font-family="Source Sans 3, Segoe UI, sans-serif">Diagram</text>
+          <rect x="232" y="98" width="80" height="36" rx="10" fill="#10151c" stroke="rgba(232,200,114,0.55)" stroke-width="1.25"></rect>
+          <text x="272" y="116" text-anchor="middle" fill="#F5F0E6" font-size="10" font-family="Source Sans 3, Segoe UI, sans-serif">App build</text>
+          <text x="272" y="128" text-anchor="middle" fill="#B8B0A4" font-size="8" font-family="Source Sans 3, Segoe UI, sans-serif">plan · path</text>
+        </svg>
+        <figcaption>A child brings ideas. Nova helps shape them into a blueprint, a diagram, an app build, a plan, or a learning path.</figcaption>
+      </figure>
+    </section>
+
     <form class="card form" action="https://formsubmit.co/hoodlumasylumuk@gmail.com" method="POST" id="apply-form">
       <input type="hidden" name="_subject" value="Nova Unique application">
       <input type="hidden" name="_template" value="table">
@@ -114,6 +161,10 @@
       <p class="fine" id="ideas-help" hidden>Please sit with your child. Ask them what ideas they have, and write the child’s own answer here — not yours.</p>
       <textarea id="ideas" name="What ideas or inventions do you have?" required maxlength="2000" rows="5"></textarea>
 
+      <label for="idea-list">List as many of your own ideas as you can (not copied from anyone).</label>
+      <p class="fine" id="idea-list-help" hidden>Sit with your child and write their own ideas, in their own words. We want many ideas, not just one, and none should be copied or influenced by others.</p>
+      <textarea id="idea-list" name="List as many of your own ideas as you can (not copied from anyone)." required maxlength="4000" rows="8" placeholder="List as many as you can, in your own words."></textarea>
+
       <label for="unique">What makes you unique?</label>
       <textarea id="unique" name="What makes you unique?" required maxlength="2000" rows="4"></textarea>
 
@@ -122,7 +173,7 @@
 
       <div id="parent-fields" hidden>
         <h2>For parents</h2>
-        <p>Sit with your child when you apply. The ideas answer above must be in the child’s own words.</p>
+        <p>Sit with your child when you apply. The ideas answers above must be in the child’s own words, and must not be copied or influenced by others.</p>
         <label>List 19 things you want to teach your child</label>
         <p class="fine">Please number them honestly. Lists that are silly or not educational are declined.</p>
         <div class="teach-list">

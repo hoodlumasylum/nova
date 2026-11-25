@@ -13,6 +13,7 @@
   var courseAgree = document.getElementById("course-agree");
   var ideasLabel = document.getElementById("ideas-label");
   var ideasHelp = document.getElementById("ideas-help");
+  var ideaListHelp = document.getElementById("idea-list-help");
   var teachInputs = form.querySelectorAll(".teach-list input");
 
   var ORG = "Schools, colleges, universities and other organisations";
@@ -56,6 +57,7 @@
       setRequired(teachInputs[i], isParent);
     }
     ideasHelp.hidden = !isParent;
+    if (ideaListHelp) ideaListHelp.hidden = !isParent;
     ideasLabel.textContent = isParent ? IDEAS_PARENT : IDEAS_DEFAULT;
 
     courseBox.hidden = !isTeacher;
