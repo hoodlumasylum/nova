@@ -28,6 +28,7 @@ public final class ClassLesson {
         public final ArrayList<Card> cards = new ArrayList<Card>();
         public final ArrayList<String> steps = new ArrayList<String>();
         public String homework = "";
+        public String parentNote = "";
         public long startedAt;
     }
 
@@ -63,6 +64,7 @@ public final class ClassLesson {
             }
             o.put("steps", steps);
             o.put("hw", l.homework == null ? "" : l.homework);
+            o.put("note", l.parentNote == null ? "" : l.parentNote);
             return o;
         } catch (Exception e) {
             return new JSONObject();
@@ -99,6 +101,7 @@ public final class ClassLesson {
             }
         }
         l.homework = o.optString("hw", "");
+        l.parentNote = o.optString("note", "");
         if ((l.cards.isEmpty() || l.steps.isEmpty() || isBlank(l.homework)) && !isBlank(l.topic)) {
             enrichForTools(l);
         }
@@ -209,6 +212,7 @@ public final class ClassLesson {
         }
         if (isBlank(l.homework)) l.homework = buildHomework(l);
         l.homework = safeMultiline(l.homework);
+        if (!isBlank(l.parentNote)) l.parentNote = safeMultiline(l.parentNote);
     }
 
     static void buildCards(Lesson l) {

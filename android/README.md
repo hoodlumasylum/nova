@@ -4,7 +4,7 @@ A standalone Nova app for teaching. Students install the same app on their own p
 
 This is the same Nova already used in CodeAque Kids mode: gold face, moving mouth, Heart voice, on-phone brain, and Simple English Wikipedia when online. It is a separate app, so it can sit next to CodeAque.
 
-Version **1.0.2**.
+Version **1.0.3**.
 
 ## Install (one APK)
 
@@ -56,6 +56,18 @@ Students can use these tools only while the teacher has allowed access (class is
 The first time Nova speaks in her own voice, the phone downloads her voice (about 360 MB). An optional on-phone brain (about 800 MB) can also be downloaded. After that, talking works offline.
 
 She may also look up a short fact on Simple English Wikipedia when the phone is online. The class on/off switch also needs the internet, unless a student is using a start or home code. If the on-phone brain is not downloaded, Class mode still builds a lesson from Wikipedia or a simple fallback.
+
+## Parent / Teacher
+
+On the student side, **Parent / Teacher** is on the class home, the resting screen, and the join screen. It works at home even when class is off. The child's own class tools still follow the teacher's class on/off switch.
+
+1. The first time, a parent chooses a parent PIN of 6 to 16 letters or numbers (capital letters matter). It is saved only on that phone, as a salted hash — never in the project, and never on the class switch. It is not the student PIN or the teacher's PIN.
+2. After the PIN, the parent can see the child's progress, homework from class, and any note the teacher wrote for parents, and can share a progress report with the Android share sheet.
+3. **Teach a topic at home** gives the parent the same teaching tools (explanation, flashcards, quick-fire quiz, step-by-step lesson, and homework) to use with their child. Those home lessons stay on that phone.
+
+Teachers can write a **note for parents** in Class mode. It is included when they share homework, and it shows in Parent / Teacher on the child's phone once the lesson has reached that phone.
+
+This app is free for a class teacher and for parents at home. A paid option is for schools, colleges, universities and other organisations.
 
 ## Safety
 

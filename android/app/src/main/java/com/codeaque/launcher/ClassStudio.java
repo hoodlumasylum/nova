@@ -22,6 +22,7 @@ public final class ClassStudio {
     static boolean teacherQuick;
     static int spokenQuiz = -2;
     static boolean spokenReveal;
+    static boolean quizRecorded;
     static final Handler timer = new Handler();
     static final Runnable tick = new QuickTick();
     static MainActivity host;
@@ -33,6 +34,7 @@ public final class ClassStudio {
     }
 
     static ClassLesson.Lesson lesson(MainActivity a) {
+        if (a.parentSession && a.parentLesson != null) return a.parentLesson;
         if (a.draftLesson != null) return a.draftLesson;
         if (a.gate.access != null && a.gate.access.lesson != null) return a.gate.access.lesson;
         return null;
@@ -40,6 +42,22 @@ public final class ClassStudio {
 
     static boolean hasTopic(ClassLesson.Lesson l) {
         return l != null && l.topic != null && !l.topic.isEmpty();
+    }
+
+    static boolean lead(MainActivity a) {
+        return a.isTeacher() || a.parentSession;
+    }
+
+    static int backTools(MainActivity a) {
+        if (a.parentSession) return 73;
+        if (a.isTeacher()) return 13;
+        return 45;
+    }
+
+    static int afterTools(MainActivity a) {
+        if (a.parentSession) return MainActivity.S_PARENT_TEACH;
+        if (a.isTeacher()) return MainActivity.S_TEACHER_CLASS;
+        return MainActivity.S_STUDENT_HOME;
     }
 
     static void speak(MainActivity a, String s) {
@@ -67,6 +85,7 @@ public final class ClassStudio {
             col.addView(ClassUi.secondary(a, "Ask Nova about the lesson", new GoClick(a, 43)));
         }
         col.addView(ClassUi.secondary(a, "My progress", new GoClick(a, 44)));
+        ParentStudio.addButton(col, a);
         a.statusLine = ClassUi.hint(a, a.statusText());
         col.addView(a.statusLine);
         a.setContentView(ClassUi.screen(a, col));
@@ -100,7 +119,7 @@ public final class ClassStudio {
         cardIndex = 0;
         cardFlipped = false;
         cardsSeen = 0;
-        a.go(a.isTeacher() ? MainActivity.S_TEACHER_CARDS : MainActivity.S_STUDENT_CARDS);
+        a.go(lead(a) ? MainActivity.S_TEACHER_CARDS : MainActivity.S_STUDENT_CARDS);
     }
 
     static void showCards(MainActivity a, boolean teacher) {
@@ -109,7 +128,7 @@ public final class ClassStudio {
         if (l == null || l.cards.isEmpty()) {
             col.addView(ClassUi.title(a, "Flashcards"));
             col.addView(ClassUi.body(a, "There are no flashcards yet."));
-            col.addView(ClassUi.primary(a, "Back", new GoClick(a, teacher ? 13 : 45)));
+            col.addView(ClassUi.primary(a, "Back", new GoClick(a, backTools(a))));
             a.setContentView(ClassUi.screen(a, col));
             return;
         }
@@ -125,7 +144,7 @@ public final class ClassStudio {
         col.addView(ClassUi.primary(a, cardFlipped ? "Show the question" : "Flip card", new GoClick(a, 50)));
         col.addView(ClassUi.secondary(a, "Next card", new GoClick(a, 51)));
         if (cardIndex > 0) col.addView(ClassUi.secondary(a, "Previous card", new GoClick(a, 52)));
-        col.addView(ClassUi.primary(a, "Back", new GoClick(a, teacher ? 13 : 45)));
+        col.addView(ClassUi.primary(a, "Back", new GoClick(a, backTools(a))));
         a.setContentView(ClassUi.screen(a, col));
         speak(a, shown);
         if (cardsSeen < cardIndex + 1) cardsSeen = cardIndex + 1;
@@ -133,7 +152,7 @@ public final class ClassStudio {
 
     static void flipCard(MainActivity a) {
         cardFlipped = !cardFlipped;
-        showCards(a, a.isTeacher());
+        showCards(a, lead(a));
     }
 
     static void nextCard(MainActivity a) {
@@ -142,14 +161,14 @@ public final class ClassStudio {
         if (cardIndex + 1 < l.cards.size()) {
             cardIndex++;
             cardFlipped = false;
-            showCards(a, a.isTeacher());
+            showCards(a, lead(a));
             return;
         }
         if (!a.isTeacher()) {
             NovaProgress.recordCards(a, l.topic, Math.max(1, cardsSeen));
         }
         a.toast("That was the last card.");
-        a.go(a.isTeacher() ? MainActivity.S_TEACHER_CLASS : MainActivity.S_STUDENT_HOME);
+        a.go(afterTools(a));
     }
 
     static void prevCard(MainActivity a) {
@@ -157,7 +176,7 @@ public final class ClassStudio {
             cardIndex--;
             cardFlipped = false;
         }
-        showCards(a, a.isTeacher());
+        showCards(a, lead(a));
     }
 
     static void beginSteps(MainActivity a) {
@@ -167,9 +186,11 @@ public final class ClassStudio {
             return;
         }
         stepIndex = 0;
-        a.go(a.isTeacher() ? MainActivity.S_TEACHER_STEPS : MainActivity.S_TODAY);
-        if (a.isTeacher()) showSteps(a, true);
-        else showToday(a);
+        if (lead(a)) {
+            a.go(MainActivity.S_TEACHER_STEPS);
+        } else {
+            a.go(MainActivity.S_TODAY);
+        }
     }
 
     static void showSteps(MainActivity a, boolean teacher) {
@@ -178,7 +199,7 @@ public final class ClassStudio {
         col.addView(ClassUi.title(a, "Step-by-step"));
         if (l == null || l.steps.isEmpty()) {
             col.addView(ClassUi.body(a, "There are no steps yet."));
-            col.addView(ClassUi.primary(a, "Back", new GoClick(a, 13)));
+            col.addView(ClassUi.primary(a, "Back", new GoClick(a, backTools(a))));
             a.setContentView(ClassUi.screen(a, col));
             return;
         }
@@ -190,10 +211,10 @@ public final class ClassStudio {
         if (stepIndex + 1 < l.steps.size()) {
             col.addView(ClassUi.primary(a, "Next", new GoClick(a, 54)));
         } else {
-            col.addView(ClassUi.primary(a, "Finish", new GoClick(a, 13)));
+            col.addView(ClassUi.primary(a, "Finish", new GoClick(a, backTools(a))));
         }
         if (stepIndex > 0) col.addView(ClassUi.secondary(a, "Back one step", new GoClick(a, 55)));
-        col.addView(ClassUi.secondary(a, "Back to class mode", new GoClick(a, 13)));
+        col.addView(ClassUi.secondary(a, a.parentSession ? "Back" : "Back to class mode", new GoClick(a, backTools(a))));
         a.setContentView(ClassUi.screen(a, col));
         speak(a, "Step " + (stepIndex + 1) + ". " + step);
     }
@@ -222,7 +243,9 @@ public final class ClassStudio {
         teacherQuick = teacher;
         spokenQuiz = -2;
         spokenReveal = false;
+        quizRecorded = false;
         host = a;
+        if (a.parentSession) teacher = true;
         a.go(teacher ? MainActivity.S_TEACHER_QUICK : MainActivity.S_SELF_QUIZ);
     }
 
@@ -232,20 +255,25 @@ public final class ClassStudio {
         col.addView(ClassUi.title(a, teacher ? "Quick-fire quiz" : "Self-quiz"));
         if (l == null || l.questions.isEmpty()) {
             col.addView(ClassUi.body(a, "There is no quiz yet."));
-            col.addView(ClassUi.primary(a, "Back", new GoClick(a, teacher ? 13 : 45)));
+            col.addView(ClassUi.primary(a, "Back", new GoClick(a, backTools(a))));
             a.setContentView(ClassUi.screen(a, col));
             return;
         }
         if (quizIndex >= l.questions.size()) {
             stopTimer();
             col.addView(ClassUi.huge(a, "Score: " + quizScore + " out of " + l.questions.size()));
-            if (teacher) {
-                col.addView(ClassUi.body(a, "That is the class tally for this round."));
+            if (!a.isTeacher()) {
+                if (!quizRecorded) {
+                    NovaProgress.recordQuiz(a, l.topic, quizScore, l.questions.size());
+                    quizRecorded = true;
+                }
+                col.addView(ClassUi.body(a, a.parentSession
+                        ? "Saved on this phone in the child's progress."
+                        : "Saved on this phone in My progress."));
             } else {
-                NovaProgress.recordQuiz(a, l.topic, quizScore, l.questions.size());
-                col.addView(ClassUi.body(a, "Saved on this phone in My progress."));
+                col.addView(ClassUi.body(a, "That is the class tally for this round."));
             }
-            col.addView(ClassUi.primary(a, "Back", new GoClick(a, teacher ? 13 : 45)));
+            col.addView(ClassUi.primary(a, "Back", new GoClick(a, backTools(a))));
             a.setContentView(ClassUi.screen(a, col));
             speak(a, "The score is " + quizScore + " out of " + l.questions.size() + ".");
             return;
@@ -266,7 +294,7 @@ public final class ClassStudio {
         } else {
             col.addView(ClassUi.primary(a, "Reveal answer", new GoClick(a, 58)));
         }
-        col.addView(ClassUi.secondary(a, "Back", new GoClick(a, teacher ? 13 : 45)));
+        col.addView(ClassUi.secondary(a, "Back", new GoClick(a, backTools(a))));
         a.setContentView(ClassUi.screen(a, col));
         if (!quizRevealed) {
             if (spokenQuiz != quizIndex) {
@@ -332,6 +360,9 @@ public final class ClassStudio {
         if (text == null || text.trim().isEmpty()) {
             a.toast("There is no homework sheet yet.");
             return;
+        }
+        if (l.parentNote != null && !l.parentNote.trim().isEmpty()) {
+            text = text + "\n\nNote for parents:\n" + l.parentNote;
         }
         try {
             Intent send = new Intent(Intent.ACTION_SEND);

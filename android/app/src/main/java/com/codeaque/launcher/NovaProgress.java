@@ -67,4 +67,27 @@ public final class NovaProgress {
         b.append("\n\nThis stays on this phone. Your teacher cannot see it from here.");
         return b.toString();
     }
+
+    public static String parentSummary(Context c) {
+        SharedPreferences p = prefs(c);
+        int quizzes = p.getInt(QUIZZES, 0);
+        int last = p.getInt(LAST, 0);
+        int lastTotal = p.getInt(LAST_TOTAL, 0);
+        int best = p.getInt(BEST, 0);
+        int bestTotal = p.getInt(BEST_TOTAL, 0);
+        int cards = p.getInt(CARDS, 0);
+        String topic = p.getString(TOPIC, "");
+        StringBuilder b = new StringBuilder();
+        b.append("Child's progress (stored on this phone only)\n\n");
+        if (topic != null && !topic.isEmpty()) {
+            b.append("Last topic practised: ").append(topic).append("\n\n");
+        }
+        b.append("Quizzes finished: ").append(quizzes).append('\n');
+        if (lastTotal > 0) b.append("Last self-quiz: ").append(last).append(" out of ").append(lastTotal).append('\n');
+        else b.append("Last self-quiz: not yet.\n");
+        if (bestTotal > 0) b.append("Best score: ").append(best).append(" out of ").append(bestTotal).append('\n');
+        else b.append("Best score: not yet.\n");
+        b.append("Flashcards practised: ").append(cards);
+        return b.toString();
+    }
 }

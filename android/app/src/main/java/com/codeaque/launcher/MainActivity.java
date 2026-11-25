@@ -56,6 +56,9 @@ public class MainActivity extends Activity implements NovaView.Host {
     static final int S_STUDENT_CARDS = 44;
     static final int S_SELF_QUIZ = 45;
     static final int S_PROGRESS = 46;
+    static final int S_PARENT_PIN = 70;
+    static final int S_PARENT_HOME = 71;
+    static final int S_PARENT_TEACH = 72;
 
     static final String PREFS = "nova-class";
     static final String P_ROLE = "role";
@@ -80,7 +83,11 @@ public class MainActivity extends Activity implements NovaView.Host {
     EditText pinField, pinField2, codeField, nameField, topicField;
     TextView statusLine;
     ClassLesson.Lesson draftLesson;
+    ClassLesson.Lesson parentLesson;
+    boolean parentSession;
+    boolean parentUnlocked;
     String pendingAsk;
+    EditText noteField;
     final Runnable poll = new PollTick(this);
 
     @Override protected void onCreate(Bundle b) {
@@ -194,11 +201,28 @@ public class MainActivity extends Activity implements NovaView.Host {
         if (screen == S_STUDENT_CARDS) { ClassStudio.showCards(this, false); return; }
         if (screen == S_SELF_QUIZ) { ClassStudio.showQuick(this, false); return; }
         if (screen == S_PROGRESS) { ClassStudio.showProgress(this); return; }
+        if (screen == S_PARENT_PIN) { ParentStudio.showPin(this); return; }
+        if (screen == S_PARENT_HOME) { ParentStudio.showHome(this); return; }
+        if (screen == S_PARENT_TEACH) { ParentStudio.showTeach(this); return; }
         showRole();
+    }
+
+    boolean isParentScreen() {
+        if (screen == S_PARENT_PIN || screen == S_PARENT_HOME || screen == S_PARENT_TEACH) return true;
+        return parentSession && (screen == S_TEACHER_CARDS || screen == S_TEACHER_QUICK || screen == S_TEACHER_STEPS);
+    }
+
+    boolean isParentDest(int s) {
+        if (s == S_PARENT_PIN || s == S_PARENT_HOME || s == S_PARENT_TEACH) return true;
+        return parentSession && (s == S_TEACHER_CARDS || s == S_TEACHER_QUICK || s == S_TEACHER_STEPS);
     }
 
     void go(int next) {
         if (next != S_TEACHER_QUICK) ClassStudio.stopTimer();
+        if (parentSession && !isParentDest(next)) {
+            parentSession = false;
+            parentUnlocked = false;
+        }
         screen = next;
         show();
     }
@@ -279,6 +303,7 @@ public class MainActivity extends Activity implements NovaView.Host {
         col.addView(ClassUi.primary(this, "Just Nova", new GoClick(this, 14)));
         col.addView(ClassUi.secondary(this, "Students", new GoClick(this, 15)));
         col.addView(ClassUi.secondary(this, "Show a start code", new GoClick(this, 16)));
+        col.addView(ClassUi.paidHint(this));
         setContentView(ClassUi.screen(this, col));
     }
 
@@ -344,6 +369,12 @@ public class MainActivity extends Activity implements NovaView.Host {
             col.addView(ClassUi.primary(this, "Quick-fire quiz", new GoClick(this, 60)));
             col.addView(ClassUi.secondary(this, "Step-by-step lesson", new GoClick(this, 61)));
             col.addView(ClassUi.secondary(this, "Share homework", new GoClick(this, 64)));
+            col.addView(ClassUi.heading(this, "Note for parents"));
+            col.addView(ClassUi.hint(this, "This note is included when you share homework, and parents can see it in Parent / Teacher on the child's phone."));
+            noteField = ClassUi.area(this, "A short note for parents");
+            if (lesson.parentNote != null && !lesson.parentNote.isEmpty()) noteField.setText(lesson.parentNote);
+            col.addView(noteField);
+            col.addView(ClassUi.secondary(this, "Save note for parents", new GoClick(this, 65)));
         }
         col.addView(ClassUi.secondary(this, "Back", new GoClick(this, 18)));
         setContentView(ClassUi.screen(this, col));
@@ -368,6 +399,7 @@ public class MainActivity extends Activity implements NovaView.Host {
         col.addView(nameField);
         col.addView(ClassUi.primary(this, "Join", new GoClick(this, 30)));
         col.addView(ClassUi.secondary(this, "I have a start or home code", new GoClick(this, 31)));
+        ParentStudio.addButton(col, this);
         col.addView(ClassUi.secondary(this, "Back", new GoClick(this, 4)));
         statusLine = ClassUi.hint(this, "");
         col.addView(statusLine);
@@ -399,6 +431,7 @@ public class MainActivity extends Activity implements NovaView.Host {
         col.addView(msg);
         col.addView(ClassUi.hint(this, "Your teacher will turn Nova on when class starts. If they have allowed home use, she will wake up for you."));
         col.addView(ClassUi.secondary(this, "I have a start or home code", new GoClick(this, 31)));
+        ParentStudio.addButton(col, this);
         statusLine = ClassUi.hint(this, statusText());
         col.addView(statusLine);
         root.addView(col, new FrameLayout.LayoutParams(
@@ -583,6 +616,46 @@ public class MainActivity extends Activity implements NovaView.Host {
                 "New student PIN: " + pin + ". The old one no longer works.", S_TEACHER_HOME));
     }
 
+    void loadParentLesson() {
+        String raw = getSharedPreferences(ParentStudio.PREFS, MODE_PRIVATE).getString(ParentStudio.P_LESSON, "");
+        if (raw == null || raw.isEmpty()) {
+            if (parentLesson == null) parentLesson = null;
+            return;
+        }
+        try {
+            parentLesson = ClassLesson.fromJson(new org.json.JSONObject(raw));
+        } catch (Exception e) {
+            parentLesson = null;
+        }
+    }
+
+    void saveParentLesson() {
+        if (parentLesson == null) return;
+        getSharedPreferences(ParentStudio.PREFS, MODE_PRIVATE)
+                .edit()
+                .putString(ParentStudio.P_LESSON, ClassLesson.toJson(parentLesson).toString())
+                .apply();
+    }
+
+    void saveParentNote() {
+        ClassLesson.Lesson lesson = draftLesson != null ? draftLesson
+                : (gate.access != null ? gate.access.lesson : null);
+        if (lesson == null) {
+            toast("Make a lesson first, then you can save a note for parents.");
+            return;
+        }
+        String note = noteField == null ? "" : noteField.getText().toString().trim();
+        if (note.length() > 500) note = note.substring(0, 500).trim();
+        lesson.parentNote = note;
+        draftLesson = lesson;
+        gate.access.lesson = lesson;
+        setBusy(true);
+        ClassGate.pushControl(gate, new AfterPush(this,
+                note.isEmpty() ? "The parent note was cleared."
+                        : "Note for parents saved. It is included when you share homework.",
+                S_TEACHER_CLASS));
+    }
+
     void addUpdateBanner(LinearLayout col) {
         NovaUpdate.Offer o = NovaUpdateGo.pending();
         if (o == null) return;
@@ -622,7 +695,7 @@ public class MainActivity extends Activity implements NovaView.Host {
     }
 
     void onGo(int action) {
-        if (busy && action != 4 && action != 18) return;
+        if (busy && action != 4 && action != 18 && action != 72) return;
         switch (action) {
             case 1:
                 prefs.edit().putString(P_ROLE, "teacher").apply();
@@ -742,6 +815,32 @@ public class MainActivity extends Activity implements NovaView.Host {
                 break;
             case 64:
                 ClassStudio.shareHomework(this);
+                break;
+            case 65:
+                saveParentNote();
+                break;
+            case 70:
+                ParentStudio.open(this);
+                break;
+            case 71:
+                ParentStudio.submitPin(this);
+                break;
+            case 72:
+                ParentStudio.leave(this);
+                break;
+            case 73:
+                parentSession = true;
+                go(S_PARENT_TEACH);
+                break;
+            case 74:
+                ParentStudio.shareReport(this);
+                break;
+            case 75:
+                ParentStudio.startLesson(this);
+                break;
+            case 76:
+                parentSession = true;
+                go(S_PARENT_HOME);
                 break;
             default:
                 break;
@@ -940,6 +1039,9 @@ public class MainActivity extends Activity implements NovaView.Host {
     void onPulled(boolean ok) {
         setBusy(false);
         saveCache();
+        if (isParentScreen()) {
+            return;
+        }
         if ("student".equals(prefs.getString(P_ROLE, ""))
                 && !prefs.getString(P_SNAME, "").isEmpty()) {
             if (studentPinChanged()) {
@@ -1122,7 +1224,9 @@ final class AfterPull implements ClassGate.Cb {
         a.saveCache();
         if (showAfter) {
             a.routeFromPrefs();
-            if (a.studentPinChanged()) {
+            if (a.isParentScreen()) {
+                a.show();
+            } else if (a.studentPinChanged()) {
                 a.go(MainActivity.S_STUDENT_JOIN);
             } else if ("student".equals(a.prefs.getString(MainActivity.P_ROLE, ""))
                     && !a.prefs.getString(MainActivity.P_SNAME, "").isEmpty()) {

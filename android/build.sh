@@ -15,7 +15,7 @@ mkdir -p "$B/classes" "$B/dex" dist
 cp app/src/main/AndroidManifest.xml "$B/AndroidManifest.xml"
 "$BT/aapt2" compile --dir app/src/main/res -o "$B/res.zip"
 "$BT/aapt2" link -I "$JAR" --manifest "$B/AndroidManifest.xml" -A app/src/main/assets -o "$B/base.apk" \
-  --java "$B/gen" "$B/res.zip" --min-sdk-version 24 --target-sdk-version 30 --version-code 3 --version-name 1.0.2
+  --java "$B/gen" "$B/res.zip" --min-sdk-version 24 --target-sdk-version 30 --version-code 4 --version-name 1.0.3
 javac --release 11 -classpath "$JAR" -d "$B/classes" $(find app/src/main/java "$B/gen" -name '*.java')
 "$BT/d8" --release --min-api 24 --lib "$JAR" --output "$B/dex" $(find "$B/classes" -name '*.class')
 cp "$B/base.apk" "$B/unsigned.apk"

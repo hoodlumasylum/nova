@@ -197,6 +197,25 @@ public final class ClassUi {
         return t;
     }
 
+    public static EditText area(Context c, String hint) {
+        EditText e = field(c, hint, android.text.InputType.TYPE_CLASS_TEXT
+                | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        e.setSingleLine(false);
+        e.setMinLines(3);
+        e.setMaxLines(6);
+        e.setGravity(android.view.Gravity.TOP | android.view.Gravity.START);
+        return e;
+    }
+
+    /** Free for a class teacher and for parents at home. Paid option wording is fixed. */
+    public static final String PAID_OPTION =
+            "This app is free for a class teacher and for parents at home. "
+            + "A paid option is for schools, colleges, universities and other organisations.";
+
+    public static TextView paidHint(Context c) {
+        return hint(c, PAID_OPTION);
+    }
+
     public static void addSpace(LinearLayout col, int dps) {
         View v = new View(col.getContext());
         v.setLayoutParams(new LinearLayout.LayoutParams(1, dp(col.getContext(), dps)));

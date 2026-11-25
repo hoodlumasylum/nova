@@ -95,7 +95,10 @@ public final class NovaUpdateGo {
                 || screen == MainActivity.S_TEACHER_STUDENTS
                 || screen == MainActivity.S_STUDENT_JOIN
                 || screen == MainActivity.S_STUDENT_HOME
-                || screen == MainActivity.S_STUDENT_REST;
+                || screen == MainActivity.S_STUDENT_REST
+                || screen == MainActivity.S_PARENT_PIN
+                || screen == MainActivity.S_PARENT_HOME
+                || screen == MainActivity.S_PARENT_TEACH;
     }
 
     static final class CheckJob implements Runnable {

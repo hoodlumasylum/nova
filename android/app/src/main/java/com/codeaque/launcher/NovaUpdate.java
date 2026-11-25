@@ -13,7 +13,7 @@ import java.util.Locale;
 public final class NovaUpdate {
     public static final String REPO = "hoodlumasylum/nova";
     public static final String API = "https://api.github.com/repos/" + REPO + "/releases?per_page=20";
-    public static final String UA = "NovaAndroid/1.0.2";
+    public static final String UA = "NovaAndroid/1.0.3";
 
     public static final class Offer {
         public String tag = "";
