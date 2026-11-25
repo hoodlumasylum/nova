@@ -1,0 +1,182 @@
+:root {
+  --bg: #0E1218;
+  --card: #1A2230;
+  --gold: #E8C872;
+  --text: #F5F0E6;
+  --muted: #B8B0A4;
+  --ink: #141A22;
+  --line: rgba(232, 200, 114, 0.28);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  width: min(36rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 4rem;
+}
+
+.hero { text-align: center; }
+.brand {
+  margin: 0 0 1.25rem;
+  color: var(--gold);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.face {
+  display: block;
+  width: min(17rem, 78vw);
+  height: auto;
+  margin: 0 auto 1.1rem;
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.55));
+}
+.face-small { width: min(11rem, 55vw); }
+.kicker {
+  margin: 0;
+  color: var(--muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+h1 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(2.15rem, 8vw, 3.15rem);
+  line-height: 1.12;
+  color: var(--gold);
+  margin: 0.35rem 0 0.85rem;
+}
+.lead, .card p, .fine, footer p {
+  color: var(--muted);
+}
+.lead { margin: 0 0 1.6rem; }
+.lead a, footer a { color: var(--gold); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 1.15rem;
+  padding: 1.35rem 1.25rem 1.45rem;
+  margin-bottom: 1.15rem;
+}
+.card h2, .form h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.55rem;
+  color: var(--text);
+  margin: 0 0 0.7rem;
+}
+.card p { margin: 0 0 0.8rem; }
+.card p:last-child { margin-bottom: 0; }
+.card strong { color: var(--text); font-weight: 600; }
+
+label, legend {
+  display: block;
+  margin: 1rem 0 0.35rem;
+  color: var(--text);
+  font-weight: 600;
+}
+fieldset {
+  border: 0;
+  margin: 0.6rem 0 0;
+  padding: 0;
+}
+.choice {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  font-weight: 400;
+  margin: 0.45rem 0;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  background: #10151c;
+  cursor: pointer;
+}
+.choice:has(input:checked) {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+.choice input { margin-top: 0.3rem; accent-color: var(--gold); flex: 0 0 auto; }
+.choice span { display: block; }
+.choice em {
+  display: block;
+  margin-top: 0.15rem;
+  font-style: normal;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 400;
+}
+
+input[type="text"], input[type="email"], select, textarea {
+  width: 100%;
+  padding: 0.85rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: #10151c;
+  color: var(--text);
+  font: inherit;
+  font-size: 1.05rem;
+}
+textarea { resize: vertical; min-height: 8rem; }
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.org {
+  margin-top: 1rem;
+  padding: 0.9rem 0.9rem 1rem;
+  border-radius: 0.9rem;
+  border: 1px dashed var(--line);
+}
+.org-note { color: var(--muted); margin: 0 0 0.4rem; font-size: 0.98rem; }
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  margin-top: 1.35rem;
+  padding: 0.95rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  font-size: 1.08rem;
+  cursor: pointer;
+}
+button[type="submit"]:hover { filter: brightness(1.06); }
+
+.fine { margin: 0.85rem 0 0; font-size: 0.92rem; }
+footer { text-align: center; margin-top: 1.5rem; }
+footer p {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--gold);
+}
+
+.honey {
+  position: absolute;
+  left: -9999px;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .wrap { padding-top: 2.2rem; }
+  .card, .form { padding: 1.6rem 1.6rem 1.7rem; }
+}

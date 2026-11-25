@@ -2,6 +2,12 @@
 
 Nova is a standalone offline talking assistant for Linux and Windows. She is not part of CodeAque. After Setup she stays on this PC — no accounts, no API keys. Models are downloaded at Setup, not bundled here.
 
+## Apply for Nova
+
+We're selective. Nova is true AI. Students, parents and teachers can apply for free (no payment — just your reasons). Schools, colleges, universities and other organisations apply for a paid licence; Code replies with pricing (no prices are shown on the page).
+
+Apply here: <https://hoodlumasylum.github.io/nova/>
+
 ## Install on Linux
 
 1. Download `nova-0.1.0.tar.gz` or `nova-0.1.0.zip` from the latest [release](https://github.com/hoodlumasylum/nova/releases).

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Apply for Nova — Hoodlum Asylum</title>
+  <meta name="description" content="We're selective. Nova is true AI. Apply to use Nova from Hoodlum Asylum.">
+  <meta name="theme-color" content="#0E1218">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="brand">Hoodlum Asylum</p>
+      <img class="face" src="assets/nova-face.webp" width="720" height="720" alt="Nova, a gold and cream android with warm gold eyes and a gold feather in her braids">
+      <p class="kicker">Apply for Nova</p>
+      <h1>We're selective.<br>Nova is true AI.</h1>
+      <p class="lead">Nova is a classroom and home helper from Hoodlum Asylum. We do not hand her out to everyone. Tell us who you are, and why you need her.</p>
+    </header>
+
+    <section class="card" aria-labelledby="who-heading">
+      <h2 id="who-heading">Who can apply</h2>
+      <p>If you are a <strong>student</strong>, a <strong>parent</strong>, or a <strong>teacher</strong>, Nova is free. There is no payment. Just tell us why you need her.</p>
+      <p><strong>Schools, colleges, universities and other organisations</strong> apply for a paid licence. Code will reply with pricing. No prices are shown on this page.</p>
+    </section>
+
+    <form class="card form" action="https://formsubmit.co/hoodlumasylumuk@gmail.com" method="POST" id="apply-form" novalidate>
+      <input type="hidden" name="_subject" value="Nova application">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://hoodlumasylum.github.io/nova/thanks.html">
+      <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <h2>Your application</h2>
+
+      <label for="name">Name</label>
+      <input id="name" name="Name" type="text" autocomplete="name" required maxlength="120">
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required maxlength="200">
+
+      <fieldset>
+        <legend>I am applying as</legend>
+        <label class="choice">
+          <input type="radio" name="role" value="Student" required>
+          <span>Student <em>Free — no payment, just your reasons</em></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="role" value="Parent" required>
+          <span>Parent <em>Free — no payment, just your reasons</em></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="role" value="Teacher" required>
+          <span>Teacher <em>Free — no payment, just your reasons</em></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="role" value="Schools, colleges, universities and other organisations" required>
+          <span>Schools, colleges, universities and other organisations <em>Paid licence — Code will reply with pricing</em></span>
+        </label>
+      </fieldset>
+
+      <div id="org-fields" class="org" hidden>
+        <p class="org-note">This is a paid licence. Code will reply with pricing. No prices are shown here. Please add your organisation’s name and size.</p>
+        <label for="org-name">Organisation name</label>
+        <input id="org-name" name="organisation" type="text" maxlength="200" autocomplete="organization">
+        <label for="org-size">Organisation size</label>
+        <select id="org-size" name="organisation_size">
+          <option value="">Choose a size</option>
+          <option value="Under 50 people">Under 50 people</option>
+          <option value="50 to 200 people">50 to 200 people</option>
+          <option value="200 to 1,000 people">200 to 1,000 people</option>
+          <option value="More than 1,000 people">More than 1,000 people</option>
+        </select>
+      </div>
+
+      <label for="reason">Why do you need Nova?</label>
+      <textarea id="reason" name="Why do you need Nova?" required maxlength="2000" rows="6" placeholder="In your own words…"></textarea>
+
+      <button type="submit">Send application</button>
+      <p class="fine">Your application is read by a person at Hoodlum Asylum. Do not send payments on this page.</p>
+    </form>
+
+    <footer>
+      <p>Hoodlum Asylum</p>
+    </footer>
+  </main>
+  <script src="apply.js"></script>
+</body>
+</html>
