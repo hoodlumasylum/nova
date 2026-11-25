@@ -26,6 +26,14 @@ Windows Setup downloads official Ollama for Windows, Piper, and whisper.cpp buil
 
 A full list of what she needs, including optional voices and sizes, is in [docs/software.md](docs/software.md).
 
+## Install on Android (class app)
+
+A standalone Nova APK for teaching. Students each install the same app. The teacher turns class on and off, and can allow home use. Full steps are in [android/README.md](android/README.md).
+
+1. Download **Nova.apk** from the latest [release](https://github.com/hoodlumasylum/nova/releases) (the APK itself, not a zip).
+2. Open it on the phone and allow the install if asked.
+3. The teacher should open Nova first, choose **I am the teacher**, and set a PIN, then share the class code with students.
+
 ## Her face
 
 Nova's portrait is an original character, not a picture of a real person, and the app does not clone anyone's face. Blink, gaze and lighting are layered 2D animation on that still portrait (the real iris shifts inside a soft mask, lids are sampled from her own skin, catchlights and a warm light ease with movement). It can look alive on the desktop, but it is not a filmed or 3D performance.

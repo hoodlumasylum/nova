@@ -13,3 +13,7 @@ preview/debug-*.png
 preview/diff-*.png
 preview/zoom-*.png
 preview/_palette.png
+
+# Android class app build output
+android/build/
+android/dist/
