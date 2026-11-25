@@ -52,8 +52,8 @@ body {
 h1 {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 500;
-  font-size: clamp(2.15rem, 8vw, 3.15rem);
-  line-height: 1.12;
+  font-size: clamp(1.7rem, 6.4vw, 2.55rem);
+  line-height: 1.16;
   color: var(--gold);
   margin: 0.35rem 0 0.85rem;
 }
@@ -129,7 +129,7 @@ input[type="text"], input[type="email"], select, textarea {
   font: inherit;
   font-size: 1.05rem;
 }
-textarea { resize: vertical; min-height: 8rem; }
+textarea { resize: vertical; min-height: 5.5rem; }
 input:focus, select:focus, textarea:focus, button:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
@@ -175,6 +175,39 @@ footer p {
   width: 0;
   overflow: hidden;
 }
+
+ul.rules {
+  margin: 0.4rem 0 0.9rem;
+  padding-left: 1.2rem;
+  color: var(--muted);
+}
+ul.rules li { margin: 0.3rem 0; }
+
+.teach-list { margin: 0.6rem 0 0.4rem; }
+.teach-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.35rem 0;
+}
+.teach-row label {
+  margin: 0;
+  min-width: 1.6rem;
+  color: var(--gold);
+}
+.teach-row input { flex: 1; padding: 0.65rem 0.75rem; }
+
+.warn {
+  margin: 1.15rem 0 0.6rem;
+  padding: 0.95rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(224, 122, 122, 0.55);
+  background: #2a1c1c;
+  color: #ffd0d0;
+  font-weight: 600;
+}
+
+#age-fields, #parent-fields, #course-note { margin-top: 1rem; }
 
 @media (min-width: 640px) {
   .wrap { padding-top: 2.2rem; }

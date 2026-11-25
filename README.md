@@ -4,7 +4,9 @@ Nova is a standalone offline talking assistant for Linux and Windows. She is not
 
 ## Apply for Nova
 
-We're selective. Nova is true AI. Students, parents and teachers can apply for free (no payment — just your reasons). Schools, colleges, universities and other organisations apply for a paid licence; Code replies with pricing (no prices are shown on the page).
+The application is for the **Nova Unique Development Program — Apply here. Ages 6 to 15.** It is very selective: like Ender's Game, but we pick the most unique people, not the highest scorers. Not everyone is selected. You can apply again later.
+
+Students and parents apply for a child aged 6 to 15 (no payment). Teachers and adults applying for themselves must do the course Nova is supplied with if they are selected; details are sent then. Schools, colleges, universities and other organisations apply for a paid licence; Code replies with pricing (no prices are shown on the page).
 
 Apply here: <https://hoodlumasylum.github.io/nova/>
 

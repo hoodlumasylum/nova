@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Apply for Nova — Hoodlum Asylum</title>
-  <meta name="description" content="We're selective. Nova is true AI. Apply to use Nova from Hoodlum Asylum.">
+  <title>Nova Unique Development Program — Apply here. Ages 6 to 15.</title>
+  <meta name="description" content="Nova Unique Development Program — Apply here. Ages 6 to 15. Very selective. We pick the most unique people, not the highest scorers.">
   <meta name="theme-color" content="#0E1218">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,19 +17,21 @@
     <header class="hero">
       <p class="brand">Hoodlum Asylum</p>
       <img class="face" src="assets/nova-face.webp" width="720" height="720" alt="Nova, a gold and cream android with warm gold eyes and a gold feather in her braids">
-      <p class="kicker">Apply for Nova</p>
-      <h1>We're selective.<br>Nova is true AI.</h1>
-      <p class="lead">Nova is a classroom and home helper from Hoodlum Asylum. We do not hand her out to everyone. Tell us who you are, and why you need her.</p>
+      <p class="kicker">Nova Unique</p>
+      <h1>Nova Unique Development Program — Apply here. Ages 6 to 15.</h1>
+      <p class="lead">This selection is very selective. Like Ender’s Game, but we pick the most unique people, not the highest scorers.</p>
+      <p class="lead">Nova is a classroom and home helper from Hoodlum Asylum. Not everyone is selected. You can apply again later.</p>
     </header>
 
     <section class="card" aria-labelledby="who-heading">
       <h2 id="who-heading">Who can apply</h2>
-      <p>If you are a <strong>student</strong>, a <strong>parent</strong>, or a <strong>teacher</strong>, Nova is free. There is no payment. Just tell us why you need her.</p>
+      <p>The Nova Unique Development Program is for children aged <strong>6 to 15</strong>. If you are a <strong>student</strong> or a <strong>parent</strong> applying for a child, there is no payment. Answer the questions honestly.</p>
+      <p><strong>Teachers</strong> and other adults applying for themselves may also apply. If you are 16 or over and you apply for yourself, you must do the course Nova is supplied with. Details are sent if you are selected.</p>
       <p><strong>Schools, colleges, universities and other organisations</strong> apply for a paid licence. Code will reply with pricing. No prices are shown on this page.</p>
     </section>
 
-    <form class="card form" action="https://formsubmit.co/hoodlumasylumuk@gmail.com" method="POST" id="apply-form" novalidate>
-      <input type="hidden" name="_subject" value="Nova application">
+    <form class="card form" action="https://formsubmit.co/hoodlumasylumuk@gmail.com" method="POST" id="apply-form">
+      <input type="hidden" name="_subject" value="Nova Unique application">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_next" value="https://hoodlumasylum.github.io/nova/thanks.html">
       <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -46,21 +48,39 @@
         <legend>I am applying as</legend>
         <label class="choice">
           <input type="radio" name="role" value="Student" required>
-          <span>Student <em>Free — no payment, just your reasons</em></span>
+          <span>Student <em>Free — ages 6 to 15, no payment</em></span>
         </label>
         <label class="choice">
           <input type="radio" name="role" value="Parent" required>
-          <span>Parent <em>Free — no payment, just your reasons</em></span>
+          <span>Parent applying for a child <em>Free — the child must be 6 to 15</em></span>
         </label>
         <label class="choice">
           <input type="radio" name="role" value="Teacher" required>
-          <span>Teacher <em>Free — no payment, just your reasons</em></span>
+          <span>Teacher or adult applying for myself <em>If selected, I must do the course Nova is supplied with</em></span>
         </label>
         <label class="choice">
           <input type="radio" name="role" value="Schools, colleges, universities and other organisations" required>
           <span>Schools, colleges, universities and other organisations <em>Paid licence — Code will reply with pricing</em></span>
         </label>
       </fieldset>
+
+      <div id="age-fields" hidden>
+        <label for="child-age" id="age-label">Child’s age</label>
+        <select id="child-age" name="Age">
+          <option value="">Choose an age</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+        </select>
+        <p class="fine">Only ages 6 to 15 can be chosen.</p>
+      </div>
 
       <div id="org-fields" class="org" hidden>
         <p class="org-note">This is a paid licence. Code will reply with pricing. No prices are shown here. Please add your organisation’s name and size.</p>
@@ -76,8 +96,129 @@
         </select>
       </div>
 
-      <label for="reason">Why do you need Nova?</label>
-      <textarea id="reason" name="Why do you need Nova?" required maxlength="2000" rows="6" placeholder="In your own words…"></textarea>
+      <div id="course-note" class="org" hidden>
+        <p class="org-note">If you are 16 or over and you are applying for yourself, you must do the course Nova is supplied with. Details are sent if you are selected.</p>
+        <label class="choice">
+          <input type="checkbox" id="course-agree" name="Course_agreement" value="I understand that if I am selected I must do the course Nova is supplied with. Details will be sent if I am selected.">
+          <span>I understand that, if I am selected, I must do the course Nova is supplied with. Details will be sent if I am selected.</span>
+        </label>
+      </div>
+
+      <label for="future">What do you want to be in the future?</label>
+      <textarea id="future" name="What do you want to be in the future?" required maxlength="2000" rows="4"></textarea>
+
+      <label for="goals">What are your goals?</label>
+      <textarea id="goals" name="What are your goals?" required maxlength="2000" rows="4"></textarea>
+
+      <label for="ideas" id="ideas-label">What ideas or inventions do you have?</label>
+      <p class="fine" id="ideas-help" hidden>Please sit with your child. Ask them what ideas they have, and write the child’s own answer here — not yours.</p>
+      <textarea id="ideas" name="What ideas or inventions do you have?" required maxlength="2000" rows="5"></textarea>
+
+      <label for="unique">What makes you unique?</label>
+      <textarea id="unique" name="What makes you unique?" required maxlength="2000" rows="4"></textarea>
+
+      <label for="help">Do you have other learning help right now (for example a tutor)?</label>
+      <textarea id="help" name="Other learning help" required maxlength="2000" rows="3" placeholder="Yes or no, and a short detail if you do."></textarea>
+
+      <div id="parent-fields" hidden>
+        <h2>For parents</h2>
+        <p>Sit with your child when you apply. The ideas answer above must be in the child’s own words.</p>
+        <label>List 19 things you want to teach your child</label>
+        <p class="fine">Please number them honestly. Lists that are silly or not educational are declined.</p>
+        <div class="teach-list">
+          <div class="teach-row">
+            <label for="teach-1">1.</label>
+            <input id="teach-1" name="Teach_1" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-2">2.</label>
+            <input id="teach-2" name="Teach_2" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-3">3.</label>
+            <input id="teach-3" name="Teach_3" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-4">4.</label>
+            <input id="teach-4" name="Teach_4" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-5">5.</label>
+            <input id="teach-5" name="Teach_5" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-6">6.</label>
+            <input id="teach-6" name="Teach_6" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-7">7.</label>
+            <input id="teach-7" name="Teach_7" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-8">8.</label>
+            <input id="teach-8" name="Teach_8" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-9">9.</label>
+            <input id="teach-9" name="Teach_9" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-10">10.</label>
+            <input id="teach-10" name="Teach_10" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-11">11.</label>
+            <input id="teach-11" name="Teach_11" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-12">12.</label>
+            <input id="teach-12" name="Teach_12" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-13">13.</label>
+            <input id="teach-13" name="Teach_13" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-14">14.</label>
+            <input id="teach-14" name="Teach_14" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-15">15.</label>
+            <input id="teach-15" name="Teach_15" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-16">16.</label>
+            <input id="teach-16" name="Teach_16" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-17">17.</label>
+            <input id="teach-17" name="Teach_17" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-18">18.</label>
+            <input id="teach-18" name="Teach_18" type="text" maxlength="200" autocomplete="off">
+          </div>
+          <div class="teach-row">
+            <label for="teach-19">19.</label>
+            <input id="teach-19" name="Teach_19" type="text" maxlength="200" autocomplete="off">
+          </div>
+        </div>
+      </div>
+
+      <h2>The rules</h2>
+      <ul class="rules">
+        <li>Use Nova to learn, not to cheat.</li>
+        <li>Be respectful.</li>
+        <li>A parent or teacher stays involved for under-16s.</li>
+        <li>Do not share your access code.</li>
+      </ul>
+      <label class="choice">
+        <input type="checkbox" id="rules" name="Rules_agreement" value="I agree to the rules: use Nova to learn not to cheat; be respectful; a parent or teacher stays involved for under-16s; do not share your access code." required>
+        <span>I agree to these rules.</span>
+      </label>
+
+      <p class="warn">If any part of your application is untrue, access will be revoked. Nova is closely monitored and tailored to your child.</p>
+      <p class="fine">Not everyone is selected. You can apply again later.</p>
 
       <button type="submit">Send application</button>
       <p class="fine">Your application is read by a person at Hoodlum Asylum. Do not send payments on this page.</p>
